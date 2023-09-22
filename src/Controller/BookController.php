@@ -6,6 +6,7 @@ use App\Entity\Book;  //Con ParamConverter -> composer require sensio/framework-
 use App\Repository\AuthorRepository;
 use App\Repository\BookRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -14,6 +15,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\SerializerInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface; //Para validar que tipo de error estamos teniendo
 
 class BookController extends AbstractController
 {
@@ -54,21 +56,25 @@ class BookController extends AbstractController
     }
 
     #[Route('/api/books', name:"createBook", methods: ['POST'])]
-    public function createBook(Request $request, SerializerInterface $serializer, EntityManagerInterface $em, UrlGeneratorInterface $urlGenerator, AuthorRepository $authorRepository): JsonResponse
+    #[IsGranted('ROLE_ADMIN', message: 'Vous n\'avez pas les droits suffisants pour créer un livre')]
+    public function createBook(Request $request, SerializerInterface $serializer, EntityManagerInterface $em, UrlGeneratorInterface $urlGenerator, AuthorRepository $authorRepository, ValidatorInterface $validator): JsonResponse
     {
 
         $book = $serializer->deserialize($request->getContent(), Book::class, 'json'); //Hacemos la traduccion del JSON recibido para pasarlo a objeto de la Clase Book
 
-        $content = $request->toArray(); // Se recuperan los datos y se los pasa a un array
+        $errors = $validator->validate($book); //Se verifica que tipo de error es
+        if ($errors->count() > 0) {
+            return new JsonResponse($serializer->serialize($errors, 'json'), JsonResponse::HTTP_BAD_REQUEST, [], true);
+        }
 
-        $idAuthor = $content['idAuthor'] ?? -1; //Se recupera el id del autor y si no esta, se le pone -1 por default
-
-        $book->setAuthor($authorRepository->find($idAuthor)); //Se busca al autor que correspondq con el id recibido y le asigna esos datos del autor al nuevo libro. Si no se encuentra el id, se retornara null.
         $em->persist($book);
         $em->flush();
 
-        $jsonBook = $serializer->serialize($book, 'json', ['groups' => 'getBooks']); //Se serializa para poder retornarlo
+        $content = $request->toArray(); // Se recuperan los datos y se los pasa a un array
+        $idAuthor = $content['idAuthor'] ?? -1; //Se recupera el id del autor y si no esta, se le pone -1 por default
 
+        $book->setAuthor($authorRepository->find($idAuthor)); //Se busca al autor que correspondq con el id recibido y le asigna esos datos del autor al nuevo libro. Si no se encuentra el id, se retornara null.
+        $jsonBook = $serializer->serialize($book, 'json', ['groups' => 'getBooks']); //Se serializa para poder retornarlo
         $location = $urlGenerator->generate('detailBook', ['id' => $book->getId()], UrlGeneratorInterface::ABSOLUTE_URL); //Creacion de la URL de la localizacion que va en el header
 
         return new JsonResponse($jsonBook, Response::HTTP_CREATED, ["Location" => $location], true);
