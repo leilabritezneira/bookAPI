@@ -25,6 +25,7 @@ class Book
     private ?string $coverText = null;
 
     #[ORM\ManyToOne(inversedBy: 'books')]
+    #[ORM\JoinColumn(onDelete:"CASCADE")] //Para eliminar los libros del autor que eliminamos
     #[Groups(["getBooks"])]
     private ?Author $author = null;
 
