@@ -88,6 +88,14 @@
       <excludeFolder url="file://$MODULE_DIR$/vendor/symfony/expression-language" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/willdurand/hateoas" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/willdurand/hateoas-bundle" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/symfony/options-resolver" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/zircote/swagger-php" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/nelmio/api-doc-bundle" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/symfony/asset" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/symfony/twig-bridge" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/symfony/twig-bundle" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/twig/twig" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/twig/extra-bundle" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

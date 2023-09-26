@@ -20,10 +20,40 @@ use JMS\Serializer\SerializationContext;
 use Symfony\Component\Validator\Validator\ValidatorInterface; //Para validar que tipo de error estamos teniendo
 use Symfony\Contracts\Cache\ItemInterface;
 use Symfony\Contracts\Cache\TagAwareCacheInterface;
+use Nelmio\ApiDocBundle\Annotation\Model;
+use Nelmio\ApiDocBundle\Annotation\Security;
+use OpenApi\Annotations as OA;
 
 
 class BookController extends AbstractController
 {
+    /**
+     * Cette méthode permet de récupérer l'ensemble des livres.
+     *
+     * @OA\Response(
+     *     response=200,
+     *     description="Retourne la liste des livres",
+     *     @OA\JsonContent(
+     *        type="array",
+     *        @OA\Items(ref=@Model(type=Book::class, groups={"getBooks"}))
+     *     )
+     * )
+     * @OA\Parameter(
+     *     name="page",
+     *     in="query",
+     *     description="La page que l'on veut récupérer",
+     *     @OA\Schema(type="int")
+     * )
+     *
+     * @OA\Parameter(
+     *     name="limit",
+     *     in="query",
+     *     description="Le nombre d'éléments que l'on veut récupérer",
+     *     @OA\Schema(type="int")
+     * )
+     * @OA\Tag(name="Books")
+     *
+     */
     #[Route('/api/books', name: 'books', methods: ['GET'])]
     public function getAllBooks(BookRepository $bookRepository, SerializerInterface $serializer, Request $request, TagAwareCacheInterface $cachePool): JsonResponse
     {
