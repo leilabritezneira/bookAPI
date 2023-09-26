@@ -48,6 +48,11 @@ class Author
     #[Groups(["getAuthors"])]
     private Collection $books;
 
+    #[ORM\Column(nullable: true)]
+    #[Groups(["getAuthors"])]
+    #[Since("3.0")]
+    private ?int $Born = null;
+
     public function __construct()
     {
         $this->books = new ArrayCollection();
@@ -108,6 +113,18 @@ class Author
                 $book->setAuthor(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getBorn(): ?int
+    {
+        return $this->Born;
+    }
+
+    public function setBorn(?int $Born): static
+    {
+        $this->Born = $Born;
 
         return $this;
     }

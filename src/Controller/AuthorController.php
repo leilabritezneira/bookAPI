@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Author;
 use App\Entity\Book;
 use App\Repository\AuthorRepository;
+use App\Service\VersioningService;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -57,8 +58,10 @@ class AuthorController extends AbstractController
         return new JsonResponse($jsonAuthorList, Response::HTTP_OK, [], true);
     }
     #[Route('/api/authors/{id}', name: 'author', methods: ['GET'])]
-    public function getOneAuthor(Author $author, SerializerInterface $serializer) {
+    public function getOneAuthor(Author $author, SerializerInterface $serializer, VersioningService $versioningService) {
+        $version = $versioningService->getVersion();
         $context = SerializationContext::create()->setGroups(['getAuthors']);
+        $context->setVersion($version);
         $jsonAuthor = $serializer->serialize($author, 'json', $context);
         return new JsonResponse($jsonAuthor, Response::HTTP_OK, ['accept' => 'json'], true);
     }

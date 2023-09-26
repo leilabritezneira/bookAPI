@@ -39,6 +39,7 @@ class AppFixtures extends Fixture
             $author = new Author();
             $author->setFirstName("Prénom " . $i);
             $author->setLastName("Nom " . $i);
+            $author->setBorn($i);
             $manager->persist($author); // On sauvegarde l'auteur créé dans un tableau.
             $listAuthor[] = $author;
         }
@@ -48,6 +49,7 @@ class AppFixtures extends Fixture
             $book = new Book();
             $book->setTitle("Titre " . $i);
             $book->setCoverText("Quatrième de couverture numéro : " . $i);
+            $book->setComment("Commentaire du bibliothécaire " . $i);
             $book->setAuthor($listAuthor[array_rand($listAuthor)]); // On lie le livre à un auteur pris au hasard dans le tableau des auteurs.
             $manager->persist($book);
         }
