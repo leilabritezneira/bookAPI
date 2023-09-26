@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
 use App\Repository\BookRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
@@ -40,6 +41,7 @@ use Hateoas\Configuration\Annotation as Hateoas; //Sirve para poner el link de l
  *
  */
 #[ORM\Entity(repositoryClass: BookRepository::class)]
+#[ApiResource()]
 class Book
 {
     #[ORM\Id]

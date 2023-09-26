@@ -20,7 +20,9 @@ use JMS\Serializer\SerializationContext;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Contracts\Cache\ItemInterface;
 use Symfony\Contracts\Cache\TagAwareCacheInterface;
-
+use Nelmio\ApiDocBundle\Annotation\Model;
+use Nelmio\ApiDocBundle\Annotation\Security;
+use OpenApi\Annotations as OA;
 class AuthorController extends AbstractController
 {
     /*
@@ -37,6 +39,33 @@ class AuthorController extends AbstractController
         return new JsonResponse($jsonAuthorList, Response::HTTP_OK, [], true);
     }
     */
+    /**
+     * Cette méthode permet de récupérer l'ensemble des authors.
+     *
+     * @OA\Response(
+     *     response=200,
+     *     description="Retourne la liste des authors",
+     *     @OA\JsonContent(
+     *        type="array",
+     *        @OA\Items(ref=@Model(type=Author::class, groups={"getAuthors"}))
+     *     )
+     * )
+     * @OA\Parameter(
+     *     name="page",
+     *     in="query",
+     *     description="La page que l'on veut récupérer",
+     *     @OA\Schema(type="int")
+     * )
+     *
+     * @OA\Parameter(
+     *     name="limit",
+     *     in="query",
+     *     description="Le nombre d'éléments que l'on veut récupérer",
+     *     @OA\Schema(type="int")
+     * )
+     * @OA\Tag(name="Authors")
+     *
+     */
     #[Route('/api/authors', name: 'authors', methods: ['GET'])]
     public function getAllAuthors(AuthorRepository $authorRepository, SerializerInterface $serializer,
                                   Request $request, TagAwareCacheInterface $cache): JsonResponse
@@ -57,6 +86,33 @@ class AuthorController extends AbstractController
 
         return new JsonResponse($jsonAuthorList, Response::HTTP_OK, [], true);
     }
+    /**
+     * Cette méthode permet de récupérer l'ensemble des authors.
+     *
+     * @OA\Response(
+     *     response=200,
+     *     description="Retourne la liste des authors",
+     *     @OA\JsonContent(
+     *        type="array",
+     *        @OA\Items(ref=@Model(type=Author::class, groups={"getAuthors"}))
+     *     )
+     * )
+     * @OA\Parameter(
+     *     name="page",
+     *     in="query",
+     *     description="La page que l'on veut récupérer",
+     *     @OA\Schema(type="int")
+     * )
+     *
+     * @OA\Parameter(
+     *     name="limit",
+     *     in="query",
+     *     description="Le nombre d'éléments que l'on veut récupérer",
+     *     @OA\Schema(type="int")
+     * )
+     * @OA\Tag(name="Authors")
+     *
+     */
     #[Route('/api/authors/{id}', name: 'author', methods: ['GET'])]
     public function getOneAuthor(Author $author, SerializerInterface $serializer, VersioningService $versioningService) {
         $version = $versioningService->getVersion();
@@ -66,6 +122,33 @@ class AuthorController extends AbstractController
         return new JsonResponse($jsonAuthor, Response::HTTP_OK, ['accept' => 'json'], true);
     }
 
+    /**
+     * Cette méthode permet de récupérer l'ensemble des authors.
+     *
+     * @OA\Response(
+     *     response=200,
+     *     description="Retourne la liste des authors",
+     *     @OA\JsonContent(
+     *        type="array",
+     *        @OA\Items(ref=@Model(type=Author::class, groups={"getAuthors"}))
+     *     )
+     * )
+     * @OA\Parameter(
+     *     name="page",
+     *     in="query",
+     *     description="La page que l'on veut récupérer",
+     *     @OA\Schema(type="int")
+     * )
+     *
+     * @OA\Parameter(
+     *     name="limit",
+     *     in="query",
+     *     description="Le nombre d'éléments que l'on veut récupérer",
+     *     @OA\Schema(type="int")
+     * )
+     * @OA\Tag(name="Authors")
+     *
+     */
     #[Route('/api/authors/{id}', name: 'deleteAuthor', methods: ['DELETE'])]
     #[IsGranted('ROLE_ADMIN', message: 'Vous n\'avez pas les droits suffisants pour supprimer un author')]
     public function deleteAuthor(Author $author, EntityManagerInterface $em): JsonResponse
@@ -76,6 +159,33 @@ class AuthorController extends AbstractController
         return new JsonResponse(null, Response::HTTP_NO_CONTENT);
     }
 
+    /**
+     * Cette méthode permet de récupérer l'ensemble des authors.
+     *
+     * @OA\Response(
+     *     response=200,
+     *     description="Retourne la liste des authors",
+     *     @OA\JsonContent(
+     *        type="array",
+     *        @OA\Items(ref=@Model(type=Author::class, groups={"getAuthors"}))
+     *     )
+     * )
+     * @OA\Parameter(
+     *     name="page",
+     *     in="query",
+     *     description="La page que l'on veut récupérer",
+     *     @OA\Schema(type="int")
+     * )
+     *
+     * @OA\Parameter(
+     *     name="limit",
+     *     in="query",
+     *     description="Le nombre d'éléments que l'on veut récupérer",
+     *     @OA\Schema(type="int")
+     * )
+     * @OA\Tag(name="Authors")
+     *
+     */
     #[Route('/api/authors', name: "createAuthor", methods: ['POST'])]
     #[IsGranted('ROLE_ADMIN', message: 'Vous n\'avez pas les droits suffisants pour créer un author')]
     public function createAuthor(Request $request, SerializerInterface $serializer, EntityManagerInterface $em, UrlGeneratorInterface $urlGenerator, ValidatorInterface $validator): JsonResponse
@@ -112,6 +222,33 @@ class AuthorController extends AbstractController
         return new JsonResponse(null, JsonResponse::HTTP_NO_CONTENT);
     }
 */
+    /**
+     * Cette méthode permet de récupérer l'ensemble des authors.
+     *
+     * @OA\Response(
+     *     response=200,
+     *     description="Retourne la liste des authors",
+     *     @OA\JsonContent(
+     *        type="array",
+     *        @OA\Items(ref=@Model(type=Author::class, groups={"getAuthors"}))
+     *     )
+     * )
+     * @OA\Parameter(
+     *     name="page",
+     *     in="query",
+     *     description="La page que l'on veut récupérer",
+     *     @OA\Schema(type="int")
+     * )
+     *
+     * @OA\Parameter(
+     *     name="limit",
+     *     in="query",
+     *     description="Le nombre d'éléments que l'on veut récupérer",
+     *     @OA\Schema(type="int")
+     * )
+     * @OA\Tag(name="Authors")
+     *
+     */
     #[Route('/api/authors/{id}', name:"updateAuthor", methods:['PUT'])]
     #[IsGranted('ROLE_ADMIN', message: 'Vous n\'avez pas les droits suffisants pour éditer un author')]
     public function updateBook(Request $request, \JMS\Serializer\SerializerInterface $serializer, Author $currentAuthor, EntityManagerInterface $em, AuthorRepository $authorRepository, ValidatorInterface $validator, TagAwareCacheInterface $cache): JsonResponse
